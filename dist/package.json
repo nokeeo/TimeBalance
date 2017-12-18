@@ -1,0 +1,14 @@
+{
+  "name": "time-balance",
+  "version": "0.1.0",
+  "description": "A broweser extension that tracks the time you spend on each website.",
+  "main": "\"\"",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric Lee",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^2.6.2"
+  }
+}

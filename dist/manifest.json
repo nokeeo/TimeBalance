@@ -1,0 +1,15 @@
+{
+
+  "manifest_version": 2,
+  "name": "Time Balance",
+  "version": "0.1.0",
+
+  "description": "A broweser extension that tracks the time you spend on each website.",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.mozilla.org/*"],
+      "js": ["timeTrack.js"]
+    }
+  ]
+}
