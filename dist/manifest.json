@@ -11,5 +11,11 @@
       "matches": ["*://*.mozilla.org/*"],
       "js": ["timeTrack.js"]
     }
-  ]
+  ],
+
+  "background": {
+    "scripts": ["backgroundLogger.js"]
+  },
+
+  "permissions": ["tabs"]
 }
