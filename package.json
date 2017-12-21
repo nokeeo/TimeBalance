@@ -4,11 +4,16 @@
   "description": "A broweser extension that tracks the time you spend on each website.",
   "main": "\"\"",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "author": "Eric Lee",
   "license": "ISC",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "ts-loader": "^3.2.0",
     "typescript": "^2.6.2",
     "web-ext-types": "github:kelseasy/web-ext-types"
   }

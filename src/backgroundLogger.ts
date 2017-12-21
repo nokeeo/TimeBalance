@@ -1,13 +1,23 @@
+import TimeStore from './TimeStore';
 import tabs = browser.tabs;
 
 console.log('Running in the background');
 
 var lastUrl: URL = null;
 var startTime: Date = null;
+var timeStore = new TimeStore();
 
 function updateUrl(url: URL, time: Date) {
   lastUrl = url;
   startTime = time;
+}
+
+function storeData(url: URL, date: Date, duration: number) {
+  timeStore.addEntry({
+    url,
+    date,
+    duration
+  })
 }
 
 function pageChanged(url: URL) {
@@ -16,7 +26,7 @@ function pageChanged(url: URL) {
     return;
   }
 
-  // Get current date time
+  // Get current date
   let now: Date = new Date();
 
   // No previous website loaded. Update values
@@ -26,8 +36,9 @@ function pageChanged(url: URL) {
   // If current hostname does not match previous hostname update and log time
   // spent on previous host.
   else if(lastUrl.hostname != url.hostname)  {
-    let timeSpent: number = (now.getTime() - startTime.getTime());
-    console.log('You spent ' + timeSpent / 1000 + ' seconds on ' + lastUrl.hostname);
+    let duration: number = (now.getTime() - startTime.getTime());
+    console.log('You spent ' + duration / 1000 + ' seconds on ' + lastUrl.hostname);
+    storeData(lastUrl, startTime, duration);
     updateUrl(url, now);
   }
 }

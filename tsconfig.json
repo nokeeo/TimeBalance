@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
+    "target": "es6",
+    "module": "es6",
+    "noImplicitAny": true,
+    "sourceMap": true,
     "typeRoots": ["./node_modules/@types", "./node_modules/web-ext-types"]
   },
 

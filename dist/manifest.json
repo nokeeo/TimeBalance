@@ -14,8 +14,8 @@
   ],
 
   "background": {
-    "scripts": ["backgroundLogger.js"]
+    "scripts": ["background_scripts.js"]
   },
 
-  "permissions": ["tabs"]
+  "permissions": ["tabs", "storage"]
 }
