@@ -6,7 +6,7 @@ let TIME_STORE_KEY = 'TIME_STORE';
 declare type TimeData = { [key: string]: TimeEntry[] };
 
 export interface TimeEntry {
-  url: URL;
+  url: string;
   date: Date;
   duration: number;
 }
@@ -17,14 +17,14 @@ export default class TimeStore {
   private entryQueue: TimeEntry[] = [];
 
   constructor() {
-    local.get(TIME_STORE_KEY).then(function(data: storage.StorageObject) {
+    local.get(TIME_STORE_KEY).then((data: storage.StorageObject) => {
       this.data = data;
       this.entryQueue.forEach(function(item: TimeEntry) {
         this.addEntry(item);
       });
       this.entryQueue = [];
-    }, function(error) {
-      console.log(error);
+    }, (error) => {
+      console.error(error);
     });
   }
 
@@ -37,7 +37,10 @@ export default class TimeStore {
 
       this.data[dataKey].push(entry);
       let obj = { TIME_STORE_KEY : this.data };
-      local.set(obj);
+
+      local.set(obj).then(null, (error) => {
+        console.error(error);
+      });
       console.log(this.data);
     }
     else {

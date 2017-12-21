@@ -12,7 +12,7 @@ function updateUrl(url: URL, time: Date) {
   startTime = time;
 }
 
-function storeData(url: URL, date: Date, duration: number) {
+function storeData(url: string, date: Date, duration: number) {
   timeStore.addEntry({
     url,
     date,
@@ -38,7 +38,7 @@ function pageChanged(url: URL) {
   else if(lastUrl.hostname != url.hostname)  {
     let duration: number = (now.getTime() - startTime.getTime());
     console.log('You spent ' + duration / 1000 + ' seconds on ' + lastUrl.hostname);
-    storeData(lastUrl, startTime, duration);
+    storeData(lastUrl.toString(), startTime, duration);
     updateUrl(url, now);
   }
 }
