@@ -23,15 +23,15 @@ function checkInactivity() {
   }
 }
 
-window.addEventListener('mousemove', () => {
+function handleActiveEvent() {
   updateEventEntry(new Date());
-});
-
-window.addEventListener('keypress', () => {
-  updateEventEntry(new Date());
-});
+}
 
 const INACTIVITY_INTERVAL_CHECK = 5000;
 let lastEventTime: Date = null;
+
+window.addEventListener('mousemove', handleActiveEvent);
+window.addEventListener('keypress', handleActiveEvent);
+window.addEventListener('scroll', handleActiveEvent);
 
 setInterval(checkInactivity, INACTIVITY_INTERVAL_CHECK);
