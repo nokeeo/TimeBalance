@@ -1,9 +1,9 @@
-import ActivityHeartbeat from './ActivityHeartbeat';
+import ActivityHeartbeat from "./ActivityHeartbeat";
 import runtime = browser.runtime;
 
 function sendHeartbeat(lastEvent: Date) {
-  let request = runtime.sendMessage(new ActivityHeartbeat(lastEvent));
-  console.log('sending heartbeat');
+  const request = runtime.sendMessage(new ActivityHeartbeat(lastEvent));
+  console.log("sending heartbeat");
 }
 
 function pulse() {
@@ -17,8 +17,8 @@ function handleActiveEvent() {
 const PULSE_INTERVAL = 5000;
 let lastEventTime: Date = null;
 
-window.addEventListener('mousemove', handleActiveEvent);
-window.addEventListener('keypress', handleActiveEvent);
-window.addEventListener('scroll', handleActiveEvent);
+window.addEventListener("mousemove", handleActiveEvent);
+window.addEventListener("keypress", handleActiveEvent);
+window.addEventListener("scroll", handleActiveEvent);
 
 setInterval(pulse, PULSE_INTERVAL);

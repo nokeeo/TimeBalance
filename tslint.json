@@ -1,0 +1,13 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+      "interface-name": [false, "always-prefix"],
+      "no-console": [false],
+      "one-line": [false, "check-catch", "check-finally", "check-else"]
+    },
+    "rulesDirectory": []
+}

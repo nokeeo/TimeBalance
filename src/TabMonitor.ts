@@ -1,9 +1,9 @@
-import MessageDispatcher from './MessageDispatcher';
-import ActivityInfo from './ActivityInfo';
+import ActivityInfo from "./ActivityInfo";
+import MessageDispatcher from "./MessageDispatcher";
 import tabs = browser.tabs;
 
 export default class TabMonitor {
-  onActive: MessageDispatcher<ActivityInfo>;
+  public onActive: MessageDispatcher<ActivityInfo>;
 
   constructor() {
     this.onActive = new MessageDispatcher<ActivityInfo>();
@@ -12,15 +12,14 @@ export default class TabMonitor {
 
   private setupListeners() {
     // Listener for when a tab is set to active
-    tabs.onActivated.addListener((info:{ tabId: number }) => {
-      console.log('Tabbed changed to: ' + info.tabId);
+    tabs.onActivated.addListener((info: { tabId: number }) => {
+      console.log("Tabbed changed to: " + info.tabId);
       this.notifyActive(info.tabId);
     });
 
-
     // Listener for when the tab's attributes are updated
     tabs.onUpdated.addListener((tabId: number, info: { url: string }) => {
-      if(info.url) {
+      if (info.url) {
         this.notifyActive(tabId);
       }
     });
@@ -29,7 +28,7 @@ export default class TabMonitor {
   private notifyActive(tabId: number) {
     tabs.get(tabId).then((tab: tabs.Tab) => {
       this.onActive.notify({
-        tab: tab
+        tab,
       });
     });
   }

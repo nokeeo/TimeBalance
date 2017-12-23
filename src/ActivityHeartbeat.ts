@@ -1,5 +1,5 @@
 enum RuntimeMessageType {
-  Heartbeat
+  Heartbeat,
 }
 
 interface RuntimeMessage {
@@ -7,8 +7,8 @@ interface RuntimeMessage {
 }
 
 export default class ActivityHeartbeat implements RuntimeMessage {
-  lastEventTime: Date;
-  messageType: RuntimeMessageType;
+  public lastEventTime: Date;
+  public messageType: RuntimeMessageType;
 
   constructor(lastEventTime: Date) {
     this.messageType = RuntimeMessageType.Heartbeat;

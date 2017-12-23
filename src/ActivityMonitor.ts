@@ -1,15 +1,16 @@
-import MessageDispatcher from './MessageDispatcher';
-import {RuntimeMessageType, RuntimeMessage, ActivityHeartbeat} from './ActivityHeartbeat';
-import ActivityInfo from './ActivityInfo';
+import {ActivityHeartbeat, RuntimeMessage, RuntimeMessageType} from "./ActivityHeartbeat";
+import ActivityInfo from "./ActivityInfo";
+import MessageDispatcher from "./MessageDispatcher";
 import tabs = browser.tabs;
 import runtime = browser.runtime;
 
 export default class ActivityMonitor {
   private static INACTIVE_TIME = 5000;
-  private isActive: boolean;
 
-  onActive: MessageDispatcher<ActivityInfo>;
-  onInactive: MessageDispatcher<ActivityInfo>;
+  public onActive: MessageDispatcher<ActivityInfo>;
+  public onInactive: MessageDispatcher<ActivityInfo>;
+
+  private isActive: boolean;
 
   constructor() {
     this.onActive = new MessageDispatcher<ActivityInfo>();
@@ -18,39 +19,38 @@ export default class ActivityMonitor {
     this.setupListeners();
   }
 
-  handleOnMessage(request: RuntimeMessage, sender: runtime.MessageSender) {
-    if(request.messageType === RuntimeMessageType.Heartbeat) {
+  public handleOnMessage(request: RuntimeMessage, sender: runtime.MessageSender) {
+    if (request.messageType === RuntimeMessageType.Heartbeat) {
       this.handleHeartbeatMessage(request as ActivityHeartbeat, sender);
     }
   }
 
   private handleHeartbeatMessage(heartbeat: ActivityHeartbeat, sender: runtime.MessageSender) {
-    let now = new Date();
+    const now = new Date();
 
     // If we are currently inacitive see if the heartbeat's last event time is
     // in activity range
-    if(!this.isActive && this.isTimeInRange(heartbeat.lastEventTime, now)) {
+    if (!this.isActive && this.isTimeInRange(heartbeat.lastEventTime, now)) {
       this.isActive = true;
       this.onActive.notify({
-        tab: sender.tab
+        tab: sender.tab,
       });
     }
-    // If we are currently active
-    else if(this.isActive) {
+    else if (this.isActive) {
 
       // Check to see if last recorded time is outside of the activity time and
       // The tab is not audible.
-      if(!this.isTimeInRange(heartbeat.lastEventTime, now) && (sender.tab != null && !sender.tab.audible)) {
+      if (!this.isTimeInRange(heartbeat.lastEventTime, now) && (sender.tab != null && !sender.tab.audible)) {
         this.isActive = false;
         this.onInactive.notify({
-          tab: sender.tab
+          tab: sender.tab,
         });
       }
     }
   }
 
   private isTimeInRange(time: Date, curTime: Date): boolean {
-    if(time == null || curTime == null) {
+    if (time == null || curTime == null) {
       return false;
     }
     return Math.abs(curTime.getTime() - time.getTime()) < ActivityMonitor.INACTIVE_TIME;

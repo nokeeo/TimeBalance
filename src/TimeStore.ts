@@ -1,9 +1,9 @@
 import storage = browser.storage;
 import local = storage.local;
 
-let TIME_STORE_KEY = 'TIME_STORE';
+const TIME_STORE_KEY = "TIME_STORE";
 
-declare type TimeData = { [key: string]: TimeEntry[] };
+declare interface TimeData { [key: string]: TimeEntry[]; }
 
 export interface TimeEntry {
   url: string;
@@ -28,22 +28,21 @@ export default class TimeStore {
     });
   }
 
-  addEntry(entry: TimeEntry) {
-    let dataKey = entry.date.toDateString();
-    if(this.data){
-      if(!this.data[dataKey]) {
+  public addEntry(entry: TimeEntry) {
+    const dataKey = entry.date.toDateString();
+    if (this.data) {
+      if (!this.data[dataKey]) {
         this.data[dataKey] = [];
       }
 
       this.data[dataKey].push(entry);
-      let obj = { TIME_STORE_KEY : this.data };
+      const obj = { TIME_STORE_KEY : this.data };
 
       local.set(obj).then(null, (error) => {
         console.error(error);
       });
       console.log(this.data);
-    }
-    else {
+    } else {
       this.entryQueue.push(entry);
     }
   }

@@ -5,17 +5,17 @@ export default class MessageDispatcher<T> {
     this.listeners = [];
   }
 
-  addListener(callback: Callback) {
+  public addListener(callback: Callback) {
     this.listeners.push(callback);
   }
 
-  removeListener(callback: Callback) {
+  public removeListener(callback: Callback) {
     this.listeners = this.listeners.filter((item: Callback) => {
-      return callback != item
+      return callback !== item;
     });
   }
 
-  notify(data: T) {
+  public notify(data: T) {
     this.listeners.forEach((callback) => {
       callback(data);
     });

@@ -1,20 +1,19 @@
-import TimeStore from './TimeStore';
-import ActivityMonitor from './ActivityMonitor';
-import TabMonitor from './TabMonitor';
-import ActivityInfo from './ActivityInfo';
+import ActivityInfo from "./ActivityInfo";
+import ActivityMonitor from "./ActivityMonitor";
+import TabMonitor from "./TabMonitor";
+import TimeStore from "./TimeStore";
 import tabs = browser.tabs;
 
-console.log('Running in the background');
+console.log("Running in the background");
 
 let lastUrl: URL = null;
 let startTime: Date = null;
-let timeStore = new TimeStore();
-let activityMonitor = new ActivityMonitor();
-let tabMonitor = new TabMonitor();
-
+const timeStore = new TimeStore();
+const activityMonitor = new ActivityMonitor();
+const tabMonitor = new TabMonitor();
 
 function onTabActive(info: ActivityInfo) {
-  if(info.tab != null && info.tab.url != null && info.tab.active) {
+  if (info.tab != null && info.tab.url != null && info.tab.active) {
     pageChanged(new URL(info.tab.url));
   }
 }
@@ -25,12 +24,12 @@ function updateUrl(url: URL, time: Date) {
 }
 
 function storeData(url: string, date: Date, duration: number) {
-  console.log('You spent ' + duration / 1000 + ' seconds on ' + lastUrl.hostname);
+  console.log("You spent " + duration / 1000 + " seconds on " + lastUrl.hostname);
   timeStore.addEntry({
-    url,
     date,
-    duration
-  })
+    duration,
+    url,
+  });
 }
 
 function getDuration(d1: Date, d2: Date): number {
@@ -39,11 +38,11 @@ function getDuration(d1: Date, d2: Date): number {
 
 function pageChanged(url: URL) {
   // Get current date
-  let now: Date = new Date();
+  const now: Date = new Date();
 
   // Must be https or http protocol or else functions returns and clears current page
-  if(['http:', 'https:'].indexOf(url.protocol) == -1) {
-    if(lastUrl != null) {
+  if (["http:", "https:"].indexOf(url.protocol) === -1) {
+    if (lastUrl != null) {
       storeData(lastUrl.toString(), startTime, getDuration(now, startTime));
       updateUrl(null, null);
     }
@@ -51,13 +50,11 @@ function pageChanged(url: URL) {
   }
 
   // No previous website loaded. Update values
-  if(!lastUrl) {
+  if (!lastUrl) {
     updateUrl(url, now);
   }
-  // If current hostname does not match previous hostname update and log time
-  // spent on previous host.
-  else if(lastUrl.hostname != url.hostname)  {
-    let duration: number = getDuration(now, startTime);
+  else if (lastUrl.hostname !== url.hostname)  {
+    const duration: number = getDuration(now, startTime);
     storeData(lastUrl.toString(), startTime, duration);
     updateUrl(url, now);
   }
@@ -67,8 +64,8 @@ function pageChanged(url: URL) {
 activityMonitor.onActive.addListener(onTabActive);
 
 activityMonitor.onInactive.addListener((info: ActivityInfo) => {
-  console.log('inactive');
-  if(info.tab != null && lastUrl != null && info.tab.active) {
+  console.log("inactive");
+  if (info.tab != null && lastUrl != null && info.tab.active) {
     storeData(lastUrl.toString(), startTime, getDuration(new Date(), startTime));
     updateUrl(null, null);
   }
