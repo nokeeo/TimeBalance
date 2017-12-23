@@ -1,4 +1,5 @@
 import TimeStore from './TimeStore';
+import { ActivityMonitor, ActivityInfo } from './ActivityMonitor'
 import tabs = browser.tabs;
 
 console.log('Running in the background');
@@ -6,6 +7,16 @@ console.log('Running in the background');
 var lastUrl: URL = null;
 var startTime: Date = null;
 var timeStore = new TimeStore();
+var activityMonitor = new ActivityMonitor();
+
+activityMonitor.onActive.addListener((info: ActivityInfo) => {
+  console.log(info);
+  console.log('Active!');
+});
+
+activityMonitor.onInactive.addListener((info: ActivityInfo) => {
+  console.log('Inactive!');
+});
 
 function updateUrl(url: URL, time: Date) {
   lastUrl = url;
@@ -21,13 +32,17 @@ function storeData(url: string, date: Date, duration: number) {
 }
 
 function pageChanged(url: URL) {
-  // Must be https or http protocol or else functions returns
-  if(['http:', 'https:'].indexOf(url.protocol) == -1) {
-    return;
-  }
-
   // Get current date
   let now: Date = new Date();
+
+  // Must be https or http protocol or else functions returns and clears current page
+  if(['http:', 'https:'].indexOf(url.protocol) == -1) {
+    if(lastUrl != null) {
+      storeData(lastUrl.toString(), startTime, now.getTime() - startTime.getTime());
+      updateUrl(null, null);
+    }
+    return;
+  }
 
   // No previous website loaded. Update values
   if(!lastUrl) {
