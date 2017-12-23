@@ -1,26 +1,23 @@
 import TimeStore from './TimeStore';
-import { ActivityMonitor, ActivityInfo } from './ActivityMonitor'
+import ActivityMonitor from './ActivityMonitor';
+import TabMonitor from './TabMonitor';
+import ActivityInfo from './ActivityInfo';
 import tabs = browser.tabs;
 
 console.log('Running in the background');
 
-var lastUrl: URL = null;
-var startTime: Date = null;
-var timeStore = new TimeStore();
-var activityMonitor = new ActivityMonitor();
+let lastUrl: URL = null;
+let startTime: Date = null;
+let timeStore = new TimeStore();
+let activityMonitor = new ActivityMonitor();
+let tabMonitor = new TabMonitor();
 
-activityMonitor.onActive.addListener((info: ActivityInfo) => {
+
+function onTabActive(info: ActivityInfo) {
   if(info.tab != null && info.tab.url != null && info.tab.active) {
     pageChanged(new URL(info.tab.url));
   }
-});
-
-activityMonitor.onInactive.addListener((info: ActivityInfo) => {
-  if(info.tab != null && lastUrl != null && info.tab.active) {
-    storeData(lastUrl.toString(), startTime, getDuration(new Date(), startTime));
-    updateUrl(null, null);
-  }
-});
+}
 
 function updateUrl(url: URL, time: Date) {
   lastUrl = url;
@@ -28,7 +25,6 @@ function updateUrl(url: URL, time: Date) {
 }
 
 function storeData(url: string, date: Date, duration: number) {
-  console.error('hi');
   console.log('You spent ' + duration / 1000 + ' seconds on ' + lastUrl.hostname);
   timeStore.addEntry({
     url,
@@ -67,19 +63,15 @@ function pageChanged(url: URL) {
   }
 }
 
-// Listener for when a tab is set to active
-tabs.onActivated.addListener(function(info:{ tabId: number }) {
-  console.log('Tabbed changed to: ' + info.tabId);
-  tabs.get(info.tabId).then(function(tab: tabs.Tab) {
-    if(tab.url) {
-      pageChanged(new URL(tab.url));
-    }
-  });
-});
+// Add monitor listeners
+activityMonitor.onActive.addListener(onTabActive);
 
-// Listener for when the tab's attributes are updated
-tabs.onUpdated.addListener(function(tabId: number, info: { url: string }) {
-  if(info.url) {
-    pageChanged(new URL(info.url));
+activityMonitor.onInactive.addListener((info: ActivityInfo) => {
+  console.log('inactive');
+  if(info.tab != null && lastUrl != null && info.tab.active) {
+    storeData(lastUrl.toString(), startTime, getDuration(new Date(), startTime));
+    updateUrl(null, null);
   }
 });
+
+tabMonitor.onActive.addListener(onTabActive);

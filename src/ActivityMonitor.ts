@@ -1,11 +1,8 @@
 import MessageDispatcher from './MessageDispatcher';
 import {RuntimeMessageType, RuntimeMessage, ActivityHeartbeat} from './ActivityHeartbeat';
+import ActivityInfo from './ActivityInfo';
 import tabs = browser.tabs;
 import runtime = browser.runtime;
-
-interface ActivityInfo {
-  tab?: tabs.Tab;
-}
 
 export default class ActivityMonitor {
   private static INACTIVE_TIME = 5000;
