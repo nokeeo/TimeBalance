@@ -10,12 +10,16 @@ var timeStore = new TimeStore();
 var activityMonitor = new ActivityMonitor();
 
 activityMonitor.onActive.addListener((info: ActivityInfo) => {
-  console.log(info);
-  console.log('Active!');
+  if(info.tab != null && info.tab.url != null && info.tab.active) {
+    pageChanged(new URL(info.tab.url));
+  }
 });
 
 activityMonitor.onInactive.addListener((info: ActivityInfo) => {
-  console.log('Inactive!');
+  if(info.tab != null && lastUrl != null && info.tab.active) {
+    storeData(lastUrl.toString(), startTime, getDuration(new Date(), startTime));
+    updateUrl(null, null);
+  }
 });
 
 function updateUrl(url: URL, time: Date) {
@@ -24,11 +28,17 @@ function updateUrl(url: URL, time: Date) {
 }
 
 function storeData(url: string, date: Date, duration: number) {
+  console.error('hi');
+  console.log('You spent ' + duration / 1000 + ' seconds on ' + lastUrl.hostname);
   timeStore.addEntry({
     url,
     date,
     duration
   })
+}
+
+function getDuration(d1: Date, d2: Date): number {
+  return Math.abs(d1.getTime() - d2.getTime());
 }
 
 function pageChanged(url: URL) {
@@ -38,7 +48,7 @@ function pageChanged(url: URL) {
   // Must be https or http protocol or else functions returns and clears current page
   if(['http:', 'https:'].indexOf(url.protocol) == -1) {
     if(lastUrl != null) {
-      storeData(lastUrl.toString(), startTime, now.getTime() - startTime.getTime());
+      storeData(lastUrl.toString(), startTime, getDuration(now, startTime));
       updateUrl(null, null);
     }
     return;
@@ -51,8 +61,7 @@ function pageChanged(url: URL) {
   // If current hostname does not match previous hostname update and log time
   // spent on previous host.
   else if(lastUrl.hostname != url.hostname)  {
-    let duration: number = (now.getTime() - startTime.getTime());
-    console.log('You spent ' + duration / 1000 + ' seconds on ' + lastUrl.hostname);
+    let duration: number = getDuration(now, startTime);
     storeData(lastUrl.toString(), startTime, duration);
     updateUrl(url, now);
   }
