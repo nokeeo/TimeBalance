@@ -18,8 +18,8 @@ export default class TabMonitor {
     });
 
     // Listener for when the tab's attributes are updated
-    tabs.onUpdated.addListener((tabId: number, info: { url: string }) => {
-      if (info.url) {
+    tabs.onUpdated.addListener((tabId: number, info: { url: string, audible: boolean }) => {
+      if (info.url || info.audible) {
         this.notifyActive(tabId);
       }
     });
