@@ -1,4 +1,5 @@
 .DS_Store
-*.js
+dist/*.js
+dist/*.css
 node_modules/*
 package-lock.json
