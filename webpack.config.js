@@ -6,7 +6,11 @@ module.exports = {
   entry: {
     "background_scripts.js": "./src/background/backgroundLogger.ts",
     "content_scripts.js": "./src/content_scripts/inputTracker.ts",
-    "styles.css": "./node_modules/purecss/build/pure-min.css"
+    "popup.js": "./src/popup/popupController.ts",
+    "styles.css": [
+      "./node_modules/purecss/build/pure-min.css",
+      "./src/popup/styles.css"
+    ]
   },
 
   module: {
