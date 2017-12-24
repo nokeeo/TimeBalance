@@ -26,25 +26,26 @@ export default class ActivityMonitor {
   }
 
   private handleHeartbeatMessage(heartbeat: ActivityHeartbeat, sender: runtime.MessageSender) {
-    const now = new Date();
-
-    // If we are currently inacitive see if the heartbeat's last event time is
-    // in activity range
-    if (!this.isActive && this.isTimeInRange(heartbeat.lastEventTime, now)) {
-      this.isActive = true;
-      this.onActive.notify({
-        tab: sender.tab,
-      });
-    }
-    else if (this.isActive) {
-
-      // Check to see if last recorded time is outside of the activity time and
-      // The tab is not audible.
-      if (!this.isTimeInRange(heartbeat.lastEventTime, now) && (sender.tab != null && !sender.tab.audible)) {
-        this.isActive = false;
-        this.onInactive.notify({
+    if (sender.tab != null && sender.tab.active) {
+      // If we are currently inacitive see if the heartbeat's last event time is
+      // in activity range
+      if (!this.isActive && this.isTimeInRange(heartbeat.lastEventTime, heartbeat.sent)) {
+        this.isActive = true;
+        this.onActive.notify({
           tab: sender.tab,
         });
+      }
+      else if (this.isActive) {
+
+        // Check to see if last recorded time is outside of the activity time and
+        // The tab is not audible.
+        const isNotAudible = (sender.tab != null && !sender.tab.audible);
+        if (!this.isTimeInRange(heartbeat.lastEventTime, heartbeat.sent) && isNotAudible) {
+          this.isActive = false;
+          this.onInactive.notify({
+            tab: sender.tab,
+          });
+        }
       }
     }
   }
