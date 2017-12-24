@@ -1,4 +1,4 @@
-import ActivityHeartbeat from "./ActivityHeartbeat";
+import ActivityHeartbeat from "../shared/ActivityHeartbeat";
 import runtime = browser.runtime;
 
 function sendHeartbeat(lastEvent: Date) {

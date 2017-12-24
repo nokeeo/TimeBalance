@@ -1,7 +1,7 @@
+import TimeStore from "../shared/TimeStore";
 import ActivityInfo from "./ActivityInfo";
 import ActivityMonitor from "./ActivityMonitor";
 import TabMonitor from "./TabMonitor";
-import TimeStore from "./TimeStore";
 import tabs = browser.tabs;
 
 console.log("Running in the background");

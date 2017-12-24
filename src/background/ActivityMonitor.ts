@@ -1,6 +1,6 @@
-import {ActivityHeartbeat, RuntimeMessage, RuntimeMessageType} from "./ActivityHeartbeat";
+import {ActivityHeartbeat, RuntimeMessage, RuntimeMessageType} from "../shared/ActivityHeartbeat";
+import MessageDispatcher from "../shared/MessageDispatcher";
 import ActivityInfo from "./ActivityInfo";
-import MessageDispatcher from "./MessageDispatcher";
 import tabs = browser.tabs;
 import runtime = browser.runtime;
 

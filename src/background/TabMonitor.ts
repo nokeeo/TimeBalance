@@ -1,5 +1,5 @@
+import MessageDispatcher from "../shared/MessageDispatcher";
 import ActivityInfo from "./ActivityInfo";
-import MessageDispatcher from "./MessageDispatcher";
 import tabs = browser.tabs;
 
 export default class TabMonitor {
