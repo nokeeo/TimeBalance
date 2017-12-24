@@ -16,5 +16,10 @@
     "scripts": ["background_scripts.js"]
   },
 
+  "browser_action": {
+    "default_title": "TimeBalance",
+    "default_popup": "popup.html"
+  },
+
   "permissions": ["tabs", "storage"]
 }
