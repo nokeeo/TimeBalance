@@ -9,7 +9,8 @@ module.exports = {
     "popup.js": "./src/popup/popupController.ts",
     "styles.css": [
       "./node_modules/purecss/build/pure-min.css",
-      "./src/popup/styles.css"
+      "./src/popup/styles.css",
+      "./src/pages/styles.css"
     ]
   },
 
