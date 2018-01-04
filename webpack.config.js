@@ -6,11 +6,12 @@ module.exports = {
   entry: {
     "background_scripts.js": "./src/background/backgroundLogger.ts",
     "content_scripts.js": "./src/content_scripts/inputTracker.ts",
+    "infoController.js": "./src/pages/infoController.ts",
     "popup.js": "./src/popup/popupController.ts",
     "styles.css": [
       "./node_modules/purecss/build/pure-min.css",
       "./src/popup/styles.css",
-      "./src/pages/styles.css"
+      "./src/pages/styles.scss"
     ]
   },
 
@@ -22,7 +23,7 @@ module.exports = {
         loader: 'tslint-loader',
         exclude: /node_modules/,
         options: {
-          fix: true
+          fix: false
         }
       },
 
@@ -33,10 +34,24 @@ module.exports = {
       },
 
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           use: ['css-loader', 'sass-loader']
+        }),
+        exclude: /node_modules/
+      },
+
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          use: ['css-loader']
         })
+      },
+
+      {
+        test: /\.handlebars$/,
+        use: 'handlebars-loader',
+        exclude: /node_modules/
       }
     ],
   },

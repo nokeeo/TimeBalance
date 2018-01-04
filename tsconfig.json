@@ -4,7 +4,7 @@
     "module": "es6",
     "noImplicitAny": true,
     "sourceMap": true,
-    "typeRoots": ["./node_modules/@types", "./node_modules/web-ext-types"]
+    "typeRoots": ["./node_modules/@types", "./node_modules/web-ext-types", "./src/types"],
   },
 
   "include": [
