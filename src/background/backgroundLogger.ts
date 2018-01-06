@@ -8,7 +8,6 @@ console.log("Running in the background");
 
 let lastUrl: URL = null;
 let startTime: Date = null;
-const timeStore = new TimeStore();
 const activityMonitor = new ActivityMonitor();
 const tabMonitor = new TabMonitor();
 
@@ -25,7 +24,7 @@ function updateUrl(url: URL, time: Date) {
 
 function storeData(url: string, date: Date, duration: number) {
   console.log("You spent " + duration / 1000 + " seconds on " + lastUrl.hostname);
-  timeStore.addEntry({
+  TimeStore.addEntry({
     date,
     duration,
     url,

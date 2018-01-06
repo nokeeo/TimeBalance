@@ -23,7 +23,7 @@ module.exports = {
         loader: 'tslint-loader',
         exclude: /node_modules/,
         options: {
-          fix: false
+          fix: true
         }
       },
 
