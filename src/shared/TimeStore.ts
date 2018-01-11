@@ -4,7 +4,7 @@ import local = storage.local;
 const TIME_STORE_KEY = "TIME_STORE";
 const QUERY_OBJECT: any = { [TIME_STORE_KEY]: {} };
 
-interface TimeData {
+export interface TimeData {
   [key: string]: TimeEntry[];
 }
 
@@ -46,17 +46,22 @@ export default class TimeStore {
 
   public static getData(query: EntryQuery, cb: (data: TimeData) => void) {
     local.get(QUERY_OBJECT).then((data) => {
-      const dates: TimeData = {};
       const timeData: TimeData = data[TIME_STORE_KEY];
-      if (query.dates) {
-        Object.assign(dates, TimeStore.getEntriesByDates(timeData, query.dates));
-      }
+      if (query) {
+        const dates: TimeData = {};
+        if (query.dates) {
+          Object.assign(dates, TimeStore.getEntriesByDates(timeData, query.dates));
+        }
 
-      if (query.startDate) {
-        Object.assign(dates, TimeStore.getEntriesByStartDate(timeData, query.startDate, query.endDate));
-      }
+        if (query.startDate) {
+          Object.assign(dates, TimeStore.getEntriesByStartDate(timeData, query.startDate, query.endDate));
+        }
 
-      cb(dates);
+        cb(dates);
+      }
+      else {
+        cb(timeData);
+      }
     });
   }
 
@@ -90,7 +95,6 @@ export default class TimeStore {
       return false;
     });
 
-    console.log(returnData);
     return returnData;
   }
 
