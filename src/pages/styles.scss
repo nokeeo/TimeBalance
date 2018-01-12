@@ -17,13 +17,18 @@ html, button, input, select, textarea,
 
 ul.info-list {
   padding: 0px;
+  overflow-x: hidden;
 }
 
 ul.info-list li {
+  min-width: 100%;
   margin: 0px 0px 0px $info-pane-padding;
   padding:  $info-list-top-padding $info-list-side-padding;
   list-style-type: none;
   border-bottom: solid 1px #394a4c;
+  transition-property: background-color, border-bottom, transform, padding;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-out;
 }
 
 ul.info-list li.info-list-hover {
@@ -42,9 +47,9 @@ ul.info-list li.info-list-selected {
 }
 
 .info-list-active {
-  margin-left: 0px ;
-  padding:  $info-list-top-padding $info-list-side-padding + $info-pane-padding;
   border-bottom: solid 1px #132E32;
+  padding-left: $info-pane-padding;
+  transform: translateX($info-pane-padding * -1);
 }
 
 .info-cell {

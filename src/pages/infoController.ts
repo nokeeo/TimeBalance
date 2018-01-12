@@ -23,11 +23,8 @@ function addClass(el: Element, className: string) {
 function removeClass(el: Element, className: string) {
   const classNames = el.className.split(" ");
   const classIndex = className.indexOf(className);
-  console.log(classIndex);
   if (classIndex !== -1) {
-    console.log(className);
     classNames.splice(classIndex, 1);
-    console.log(classNames);
     el.className = classNames.join(" ");
   }
 }
