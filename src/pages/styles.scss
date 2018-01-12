@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
-$infoPaneMargin: 20px;
+$info-pane-padding: 1em;
+$info-list-side-padding: .5em;
+$info-list-top-padding: .75em;
 
 html, button, input, select, textarea,
 .pure-g [class *= "pure-u"] {
@@ -18,10 +20,31 @@ ul.info-list {
 }
 
 ul.info-list li {
-  margin: 0px 0px 0px $infoPaneMargin;
-  padding: .75em .5em;
+  margin: 0px 0px 0px $info-pane-padding;
+  padding:  $info-list-top-padding $info-list-side-padding;
   list-style-type: none;
   border-bottom: solid 1px #394a4c;
+}
+
+ul.info-list li.info-list-hover {
+  @extend .info-list-active;
+  background-color: #394a4c;
+}
+
+ul.info-list li:hover {
+  @extend .info-list-active;
+  background-color: #394a4c;
+}
+
+ul.info-list li.info-list-selected {
+  @extend .info-list-active;
+  background-color: #176087;
+}
+
+.info-list-active {
+  margin-left: 0px ;
+  padding:  $info-list-top-padding $info-list-side-padding + $info-pane-padding;
+  border-bottom: solid 1px #132E32;
 }
 
 .info-cell {
@@ -40,7 +63,7 @@ ul.info-list li {
 }
 
 .info-pane-padded {
-  padding: 0px $infoPaneMargin;
+  padding: 0px $info-pane-padding;
 }
 
 #info-content {
